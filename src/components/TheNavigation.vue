@@ -144,7 +144,6 @@ nav li {
 
 .links:hover {
   color: yellow;
-  border-color: yellow;
   transition: .5s ease all;
 }
 
