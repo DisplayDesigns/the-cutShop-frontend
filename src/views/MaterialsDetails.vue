@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import store from "../store";
+import data from "../data";
 export default {
   data() {
     return {};
@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     material() {
-      return store.materials.find((material) => material.slug === this.slug);
+      return data.materials.find((material) => material.slug === this.slug);
     },
   },
 };

@@ -77,7 +77,7 @@
       <div v-if="size > -1" class="button_add-to-order">
         <button>Add To Order</button>
       </div>
-      <div v-for="order in orders" :key="order" class="displayOrders">
+      <div v-for="order in this.cart" :key="order" class="displayOrders">
         <p>{{order.materialType}} {{order.materialThickness}}mm {{order.material}}</p> 
         <p>{{order.materialArea}}SqM {{order.numberOfCuts}}cuts/pcs</p> 
         <p>£{{order.cost}}</p> 
@@ -89,8 +89,9 @@
 
 <script>
  import { uuid } from 'vue-uuid';
+ import { mapGetters } from 'vuex'
 
-import data from "@/store.js";
+import data from "../data";
 export default {
   props: {
     slug: {
@@ -109,10 +110,10 @@ export default {
       height: null,
       length: null,
       peices: null,
-      orders: [],
     };
   },
   computed: {
+    ...mapGetters(["cart"]),
     material() {
       return data.materials.find((material) => material.slug === this.slug);
     },
@@ -168,24 +169,19 @@ export default {
   },
   methods: {
     handleSubmit() {
-        let material = this.materialType.name
-        let materialType = this.materialType.type[this.types].name
-        let materialThickness = this.materialType.type[this.types].sizes[this.size].thickness
-        let materialArea = this.area
-        let numberOfCuts = this.peices
-        let cost = this.calculateCost.toFixed(2)
 
-        this.orders.push(
-          {
-            id: uuid.v1(),
-            material,
-            materialType,
-            materialThickness,
-            materialArea,
-            numberOfCuts,
-            cost
-          }
-        )
+      let newOrder = {
+        id: uuid.v1(),
+        material: this.materialType.name,
+        materialType: this.materialType.type[this.types].name,
+        materialThickness: this.materialType.type[this.types].sizes[this.size].thickness,
+        materialArea: this.area,
+        numberOfCuts: this.peices,
+        cost: this.calculateCost.toFixed(2)
+      }
+      
+
+      this.$store.dispatch('addOrder', newOrder)
     },
   },
   

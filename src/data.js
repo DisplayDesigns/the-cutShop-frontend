@@ -445,7 +445,7 @@ export default {
       ],
     },
     {
-      name: "Aluminium-Composite",
+      name: "ACM",
       slug: "aluminium-composite",
       image: "aluminium-composite.jpg",
       types: [
