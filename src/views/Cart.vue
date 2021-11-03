@@ -1,6 +1,6 @@
 <template>
-  <h1>Cart</h1>
   <div class="container">
+    <h1>Cart</h1>
     <div v-for="(order, key) in this.cart" :key="order" class="displayOrders">
     <div class="order">
       <div class="title">Order {{key + 1}}</div>
@@ -34,10 +34,25 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  padding-top: 100px;
+  padding-left: 20px;
+  padding-right: 20px;
+  position: relative;
+  background-image: url("../assets/cnc3-edit.png");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  overflow-y: auto;
+}
+
 .displayOrders {
-  width: 400px;
+  max-width: 400px;
   padding: 1rem;
   margin: 1rem auto;
+  background-color: white;
   border: 1px solid black;
   border-radius: 5px;
   display: flex;
@@ -52,4 +67,5 @@ export default {
   font-weight: bold;
   align-self: flex-end;
 }
+
 </style>

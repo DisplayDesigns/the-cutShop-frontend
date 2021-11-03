@@ -5,6 +5,7 @@
         <router-link to="/">
           <img src="../assets/logo2.jpg" alt="">
         </router-link>
+        <p class="logo-text">The Cut Shop</p>
       </div>
       <ul v-show="!mobile" class="nav-links">
         <li class="links">
@@ -90,7 +91,7 @@ export default {
     },
     checkScreen() {
       this.windowWidth = window.innerWidth
-      if (this.windowWidth <= 750) {
+      if (this.windowWidth <= 840) {
         this.mobile = true
         return
       }
@@ -104,7 +105,7 @@ export default {
 
 <style scoped>
 header {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: black;
   z-index: 99;
   width: 100%;
   position: fixed;
@@ -155,6 +156,12 @@ a:hover {
 .logo {
   display: flex;
   align-items: center;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: bold;
+  padding-left: 10px;
 }
 
 .logo img {
