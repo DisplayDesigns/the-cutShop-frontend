@@ -59,7 +59,7 @@
         </div>
 
         <div v-if="size > -1" class="form_control">
-          <label for="width">Number of peices</label>
+          <label for="width">Number of elements in nested area</label>
           <input required type="number" v-model="peices" />
         </div>
 

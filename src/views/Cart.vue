@@ -3,9 +3,9 @@
     <h1>Cart</h1>
     <div v-for="(order, key) in this.cart" :key="order" class="displayOrders">
     <div class="order">
-      <div class="title">Order {{key + 1}}</div>
-      <p>{{order.materialType}}, {{order.materialThickness}}mm, {{order.material}}</p> 
-      <p>{{order.materialArea}}SqM, {{order.numberOfCuts}}cuts/pcs</p> 
+      <div class="title">Job {{key + 1}}</div>
+      <p>{{order.materialThickness}}mm {{order.materialType}} {{order.material}}</p> 
+      <p>{{order.materialArea}} SqM <br> {{order.numberOfCuts}} pieces</p> 
     </div>
     <div class="cost">
       <p>Cost: £{{order.cost}}</p> 

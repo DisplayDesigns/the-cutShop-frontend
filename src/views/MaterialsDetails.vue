@@ -1,5 +1,4 @@
 <template>
-  <div class="hero">
     <div class="container">
       <div class="main-content">
         <p class="materialDetails-info">
@@ -57,7 +56,6 @@
         </section>
       </div>
     </div>
-  </div>
 </template>
 
 <script>

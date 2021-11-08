@@ -110,7 +110,7 @@ header {
   width: 100%;
   position: fixed;
   transition: .5s ease all;
-  color: white;
+  color: white
 }
 
 nav {
