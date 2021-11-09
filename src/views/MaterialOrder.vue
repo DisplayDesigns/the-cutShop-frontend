@@ -6,10 +6,18 @@
         <div class="material-details">
           <ol>
             <li>Select material + thickness</li>
-            <li>Input length + width of nested parts leaving minimum 15mm between parts</li>
+            <li>
+              Input length + width of nested parts leaving minimum 15mm between
+              parts
+            </li>
             <li>Input total no of parts to be cut</li>
-            <li>Upload a vector file or provide a JPG sketch of your requirements</li>
-            <li>Add as many orders as you like before you go to the shopping cart and pay</li>
+            <li>
+              Upload a vector file or provide a JPG sketch of your requirements
+            </li>
+            <li>
+              Add as many orders as you like before you go to the shopping cart
+              and pay
+            </li>
           </ol>
         </div>
 
@@ -31,9 +39,7 @@
         </div>
 
         <div v-if="types > -1" class="form_control">
-          <label for="materialSizes"
-            >Select the thickness</label
-          >
+          <label for="materialSizes">Select the thickness</label>
           <select name="materialSizes" v-model="size">
             <option :value="-1">Please Select</option>
             <option
@@ -49,25 +55,52 @@
         </div>
 
         <div v-if="size > -1" class="form_control">
-          <label for="width">Input width</label>
+          <label
+            class="input-insturction"
+            data-tooltip="input-insturction"
+            for="width"
+            >Input width of nested area in mm</label
+          >
           <input required type="number" v-model="width" />
         </div>
 
         <div v-if="size > -1" class="form_control">
-          <label for="width">Input length</label>
+          <label
+            class="input-insturction"
+            data-tooltip="input-insturction"
+            for="width"
+            >Input length of nested area in mm</label
+          >
           <input required type="number" v-model="length" />
         </div>
 
         <div v-if="size > -1" class="form_control">
-          <label for="width">Number of elements in nested area</label>
+          <label
+            class="input-insturction"
+            data-tooltip="input-insturction"
+            for="width"
+            >Number of elements in nested area</label
+          >
           <input required type="number" v-model="peices" />
         </div>
 
         <div v-if="size > -1" class="form_control">
-          <label for="width">Upload a Drawing</label>
-          <input class="choose-file-button" type="file" @change="onFileSelected" />
+          <label for="width">Upload a Multiple Files</label>
+          <input
+            class="choose-file-button"
+            type="file"
+            ref="files"
+            multiple
+            @change="handleFilesUpload()"
+          />
+          <div class="remove-file-button">
+            <div v-for="(file, key) in files" :key="key" class="file-listing">
+              {{ file.name }}
+              <span class="remove-file" @click="removeFile(key)">Remove</span>
+            </div>
+          </div>
           <div class="upload-file-button">
-            <button @click="onUpload">Upload</button>
+            <button @click="addFiles()">Add Files</button>
           </div>
         </div>
 
@@ -85,7 +118,6 @@
       <div v-if="size > -1" class="button_add-to-order">
         <button>Add To Order</button>
       </div>
-      
     </form>
   </section>
 </template>
@@ -113,7 +145,7 @@ export default {
       width: null,
       length: null,
       peices: null,
-      selectedFile: null,
+      files: [],
     };
   },
   computed: {
@@ -188,15 +220,44 @@ export default {
       };
 
       this.$store.dispatch("addOrder", newOrder);
-      alert("your order has been placed")
+      alert("your order has been placed");
     },
-    onFileSelected(event) {
-      this.selectedFile = event.target.files[0]
+    addFiles() {
+      this.$refs.files.click();
     },
-    onUpload(event) {
-      event.preventDefault()
-      console.log("File uploaded to backend")
-    }
+    submitFiles() {
+      let formData = new formData();
+
+      for (var i = 0; i < this.files.length; i++) {
+        let file = this.files[i];
+
+        formData.append("files[" + i + "]", file);
+
+        const axios = require("axios");
+        axios
+          .post("/select-files", formData, {
+            headers: {
+              "Content-Type": "muiltpart/form-data",
+            },
+          })
+          .then(function () {
+            console.log("SUCCESS");
+          })
+          .catch(function () {
+            console.log("FAILURE");
+          });
+      }
+    },
+    handleFilesUpload() {
+      let uploadedFiles = this.$refs.target.files.files;
+
+      for (var i = 0; i < uploadedFiles.length; i++) {
+        this.files.push(uploadedFiles[i]);
+      }
+    },
+    removeFile(key) {
+      this.files.splice(key, 1);
+    },
   },
 };
 </script>
@@ -300,6 +361,56 @@ img {
   border: none;
   cursor: pointer;
 }
+
+.input-insturction {
+  position: relative;
+}
+
+.input-insturction::before,
+.input-insturction::after {
+  --scale: 0;
+  --tooltip-color: #333;
+  --arrow-size: 10px;
+
+  position: absolute;
+  top: -0.25rem;
+  left: 90%;
+  transform: translateX(-50%) translateY(var(--translate-y, 0)) scale(var(--scale));
+  transition: 50ms transform;
+  transform-origin: bottom center;
+}
+
+.input-insturction::before {
+  --translate-y: calc(-100% - var(--arrow-size));
+
+  content: '';
+  color: white;
+  background: url("../assets/Untitled.png") var(--tooltip-color);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding: .5rem;
+  border-radius: .3rem;
+  text-align: center;
+  width: 600px;
+  height: 300px;
+  position: block;
+}
+
+.input-insturction:hover::before,
+.input-insturction:hover::after {
+  --scale: 1;
+}
+
+/* .input-insturction::after {
+  --translate-y: calc(-1 * var(--arrow-size));
+
+  content: '';
+  border: var(--arrow-size) solid transparent;
+  border-top-color: var(--tooltip-color);
+  transform-origin: top center;
+} */
+
 .material_type {
   background-color: white;
   border-radius: 5px;
@@ -308,7 +419,6 @@ img {
   margin-right: 20px;
   margin-left: 20px;
   text-align: left;
-  
 }
 .area {
   padding-left: 20px;
@@ -336,6 +446,16 @@ img {
   padding: 5px 10px;
 }
 
+.file-listing {
+  width: 200px;
+}
+
+.remove-file {
+  color: red;
+  cursor: pointer;
+  float: right;
+}
+
 @media (max-width: 400px) {
   .layout {
     padding-top: 70px;
@@ -361,6 +481,11 @@ img {
     padding: 5px 10px;
     background-color: white;
     border-radius: 5px;
+  }
+
+  input[type="file"] {
+    position: absolute;
+    top: -500px;
   }
 
   /* .material-name {
